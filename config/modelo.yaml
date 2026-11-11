@@ -1,0 +1,46 @@
+# Parametros del modelo. Distintos de parametros.yaml a proposito: el modelo
+# no puede leer lo que se uso para generar los datos.
+
+limpieza:
+  ventana_duplicados_s:
+    valor: 60
+    estado: supuesto
+    fuente: dos eventos iguales (misma cubeta, tipo y pedido) a menos de este tiempo cuentan como una sola lectura, revisar con datos reales de COFAS
+
+estimacion:
+  recorte_censura_dias:
+    valor: 7
+    estado: supuesto
+    fuente: los ultimos dias del historico se descartan al medir duraciones, porque los ciclos largos aun no han terminado y saldrian artificialmente cortos
+  ventana_reaparicion_dias:
+    valor: 30
+    estado: supuesto
+    fuente: una cubeta no localizada hace mas de estos dias que sigue sin eventos se da por perdida de forma definitiva
+  dias_recientes_salidas:
+    valor: 35
+    estado: supuesto
+    fuente: dias del final del historico que se remuestrean para proyectar las salidas. Con todo el historico la estacionalidad sesga la proyeccion (visto en backtest), y con menos dias la banda se queda corta
+
+proyeccion:
+  horizonte_h:
+    valor: 48
+    estado: supuesto
+    fuente: horas hacia delante que se proyectan desde el ultimo instante del historico
+  n_simulaciones:
+    valor: 1000
+    estado: supuesto
+    fuente: numero de trayectorias de Monte Carlo, mas simulaciones dan bandas mas estables
+  percentiles:
+    valor: [10, 90]
+    estado: supuesto
+    fuente: extremos de la banda de incertidumbre
+  semilla:
+    valor: 123
+    estado: supuesto
+    fuente: semilla del Monte Carlo, la misma en todos los escenarios para que se puedan comparar
+
+alerta:
+  umbral_cubetas:
+    valor: 1500
+    estado: supuesto
+    fuente: umbral orientativo del planteamiento del reto, por confirmar con COFAS

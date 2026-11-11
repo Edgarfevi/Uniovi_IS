@@ -1,0 +1,184 @@
+# Estados posibles: dato, dato_derivado, dato_con_rango, supuesto, desconocido
+# Todo lo que no sea "dato" se sustituye cuando COFAS aporte valores reales.
+
+general:
+  semilla: 42
+  dias_historico: 180
+  dias_calentamiento: 14
+  fecha_inicio: "2026-01-01"
+
+maestros:
+  n_cubetas:
+    valor: 17500
+    estado: dato_con_rango
+    rango: [15000, 20000]
+    fuente: rango estimado, pte confirmar con COFAS
+  n_farmacias:
+    valor: 650
+    estado: supuesto
+    fuente: doc de generacion, sin base
+  n_rutas:
+    valor: 40
+    estado: desconocido
+    fuente: doc de generacion, numero real de furgonetas sin conocer
+  zonas:
+    estado: supuesto
+    fuente: nombres de zona provisionales, a sustituir por las zonas reales de COFAS
+    nombres: [Oviedo, Gijon, Aviles, Cuencas, Oriente, Occidente, Cantabria]
+  tamano_farmacia:
+    estado: supuesto
+    fuente: reparto y pesos provisionales, sin base
+    proporciones:
+      pequena: 0.5
+      mediana: 0.35
+      grande: 0.15
+    factor_demanda:
+      pequena: 0.6
+      mediana: 1.0
+      grande: 1.8
+  hora_salida_rutas:
+    estado: supuesto
+    fuente: provisional, informativa por ahora
+    minima: 9
+    maxima: 12
+
+demanda:
+  pedidos_por_dia:
+    valor: 2500
+    estado: desconocido
+    fuente: provisional, da unas 5750 salidas por dia, hay que recalibrar contra las anclas del reto
+  factor_dia_semana:
+    estado: supuesto
+    lunes: 1.2
+    martes: 1.0
+    miercoles: 1.0
+    jueves: 1.0
+    viernes: 0.95
+    sabado: 0.5
+    domingo: 0.0
+  factor_mes:
+    estado: supuesto
+    fuente: dic a feb 1.25 y verano 0.9 vienen del doc, el resto a 1.0 es provisional
+    enero: 1.25
+    febrero: 1.25
+    marzo: 1.0
+    abril: 1.0
+    mayo: 1.0
+    junio: 0.9
+    julio: 0.9
+    agosto: 0.9
+    septiembre: 1.0
+    octubre: 1.0
+    noviembre: 1.0
+    diciembre: 1.25
+  ruido_diario:
+    valor: 0.10
+    estado: supuesto
+    fuente: desviacion relativa del 10 por ciento
+  crisis:
+    estado: supuesto
+    episodios_por_anio_min: 2
+    episodios_por_anio_max: 3
+    incremento: 0.40
+    duracion_dias_min: 3
+    duracion_dias_max: 5
+  perfil_horario:
+    estado: supuesto
+    fuente: pesos relativos provisionales con picos a las 8, 11 y 15, a sustituir por la forma de un dataset o de COFAS
+    pesos:
+      6: 2
+      7: 5
+      8: 12
+      9: 8
+      10: 9
+      11: 12
+      12: 8
+      13: 6
+      14: 8
+      15: 11
+      16: 6
+      17: 3
+      18: 2
+      19: 1
+      20: 1
+
+pedidos:
+  cubetas_por_pedido:
+    distribucion: uno_mas_poisson
+    lambda: 1.3
+    maximo: 8
+    estado: supuesto
+    fuente: doc de generacion, media 2.3
+  lineas_por_pedido:
+    distribucion: lognormal
+    mediana: 15
+    sigma: 0.6
+    maximo: 60
+    estado: supuesto
+    fuente: mediana y cola del doc, sigma elegido a mano, no afecta al balance de cubetas
+  prioridad:
+    probabilidad_urgente: 0.05
+    estado: supuesto
+    fuente: provisional, sin base. Solo es una etiqueta, no afecta al balance de cubetas
+
+ciclo:
+  preparacion:
+    distribucion: lognormal
+    mediana_min: 45
+    sigma: 0.5
+    estado: supuesto
+    fuente: doc de generacion
+  espera_muelle:
+    distribucion: uniforme
+    minimo_min: 20
+    maximo_min: 90
+    estado: supuesto
+    fuente: doc de generacion
+  transporte:
+    distribucion: normal_truncada
+    media_min: 105
+    desviacion_min: 30
+    minimo_min: 30
+    maximo_min: 180
+    estado: supuesto
+    fuente: rango del doc, media y desviacion elegidas a mano
+  tiempo_en_farmacia:
+    distribucion: lognormal
+    mediana_h: 20
+    sigma: 0.68
+    estado: supuesto
+    fuente: familia respaldada por Li y Cobb (2022), valores supuestos
+  consolidacion:
+    probabilidad: 0.05
+    horas_extra_min: 4
+    horas_extra_max: 12
+    estado: supuesto
+    fuente: doc de generacion
+  fusion:
+    probabilidad: 0.03
+    estado: supuesto
+    fuente: valor sin base, evento nuevo de la fase de voz
+  lavado:
+    probabilidad: 0.40
+    capacidad_por_hora: 600
+    duracion_h: 1
+    estado: supuesto
+    fuente: doc de generacion, se desconoce si el lavado registra el ID
+  perdida_por_ciclo:
+    valor: 0.0005
+    estado: dato_derivado
+    fuente: 900 compras / 1,7 millones de salidas (por confirmar), incluye roturas y crecimiento
+    fraccion_reaparece: 0.5
+    dias_reaparicion: 7
+
+registro:
+  eventos_faltantes:
+    valor: 0.02
+    estado: supuesto
+    fuente: doc de generacion
+  eventos_duplicados:
+    valor: 0.01
+    retraso_s_min: 1
+    retraso_s_max: 60
+    estado: supuesto
+    fuente: doc de generacion
