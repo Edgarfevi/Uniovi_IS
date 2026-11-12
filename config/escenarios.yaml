@@ -1,0 +1,55 @@
+# Escenarios que se comparan en run_twin.py. Cada uno es un conjunto de palancas
+# (ver model/scenarios.py). Las palancas que no se nombran quedan en su valor neutro.
+# Ningun efecto esta medido con datos de COFAS: todo es supuesto.
+
+escenarios:
+  base:
+    descripcion: lo que pasaria si todo sigue como en las ultimas semanas
+    estado: supuesto
+    palancas: {}
+
+  dia_estres:
+    descripcion: dia como el del grafico del reto. Mas pedidos, parte concentrada de 11h a 13h, estancias mas largas y cubetas retenidas en farmacias
+    estado: supuesto
+    fuente: palancas ajustadas a ojo contra seis puntos del grafico del reto (ver validation/anchors.py), no son un dato
+    palancas:
+      outflow_scale: 1.7
+      wave_fraction: 0.5
+      wave_window: [11, 13]
+      stay_scale: 1.5
+      retained_cubetas: 2000
+
+  estres_regulando_pedidos:
+    descripcion: el dia de estres, con tope de cubetas servidas por hora (regular el flujo de pedidos)
+    estado: supuesto
+    fuente: el tope de 900 por hora es un valor de prueba, sin base
+    palancas:
+      outflow_scale: 1.7
+      wave_fraction: 0.5
+      wave_window: [11, 13]
+      stay_scale: 1.5
+      retained_cubetas: 2000
+      max_outflow_per_hour: 900
+
+  estres_acelerando_devolucion:
+    descripcion: el dia de estres, pero recogiendo y devolviendo las cubetas mas rapido (estancia casi normal)
+    estado: supuesto
+    fuente: cuanto se acorta la estancia es un valor de prueba, sin base
+    palancas:
+      outflow_scale: 1.7
+      wave_fraction: 0.5
+      wave_window: [11, 13]
+      stay_scale: 1.05
+      retained_cubetas: 2000
+
+  estres_contenedor_alternativo:
+    descripcion: el dia de estres, sirviendo una parte de los pedidos con otro contenedor
+    estado: supuesto
+    fuente: el 20 por ciento es un valor de prueba, sin base
+    palancas:
+      outflow_scale: 1.7
+      wave_fraction: 0.5
+      wave_window: [11, 13]
+      stay_scale: 1.5
+      retained_cubetas: 2000
+      alternative_fraction: 0.2

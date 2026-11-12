@@ -1,0 +1,30 @@
+# Parametros de la validacion: con que se compara el modelo y como.
+
+anclajes_reto:
+  puntos:
+    horas: [6, 8, 11, 13, 20, 22]
+    cubetas: [8000, 6400, 7400, 800, -1200, 100]
+    estado: dato_con_rango
+    fuente: leidos a ojo del grafico "Proyeccion del ciclo de cubetas" de la presentacion del reto. Se sospecha que es un dia de estres por retenciones (por confirmar con COFAS)
+  tolerancia_cubetas:
+    valor: 500
+    estado: supuesto
+    fuente: error razonable de lectura a ojo del grafico
+
+backtest:
+  fraccion_ajuste:
+    valor: 0.6
+    estado: supuesto
+    fuente: parte inicial del historico con la que se estima, el resto se usa para probar
+  n_origenes:
+    valor: 20
+    estado: supuesto
+    fuente: instantes de partida distintos desde los que se proyecta y se compara con lo que paso
+  n_simulaciones:
+    valor: 200
+    estado: supuesto
+    fuente: trayectorias por origen, menos que en una proyeccion normal para que el backtest sea rapido
+  semilla:
+    valor: 5
+    estado: supuesto
+    fuente: semilla para elegir los origenes
