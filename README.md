@@ -24,7 +24,7 @@ Requiere Python 3.11 o superior.
 
 ```
 python -m venv .venv
-.venv\Scripts\activate
+source .venv/bin/activate
 pip install pandas numpy scipy pyyaml pyarrow streamlit pytest
 pip install -e .
 ```
