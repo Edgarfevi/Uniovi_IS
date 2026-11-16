@@ -33,20 +33,20 @@ El último comando instala el paquete `cofas_twin` en modo editable (hace falta 
 
 ## Cómo se usa
 
-Desde la raíz del proyecto y con el venv activo.
+Desde la raiz del proyecto y con el venv activo.
 
 **1. Generar el histórico sintético** (unos 25 segundos). Crea `data/synthetic/observado` (con ruido) y `data/synthetic/verdad` (limpio, solo para validar):
 
 ```
-python -m cofas_twin.generation.generate_history
+python -m src.cofas_twin.generation.generate_history
 ```
 
 **2. Proyectar y comparar escenarios:**
 
 ```
-python -m cofas_twin.run_twin
-python -m cofas_twin.run_twin --origen "2026-06-23 05:00" --escenarios base dia_estres
-python -m cofas_twin.run_twin --fuente cofas
+python -m src.cofas_twin.run_twin
+python -m src.cofas_twin.run_twin --origen "2026-06-23 05:00" --escenarios base dia_estres
+python -m src.cofas_twin.run_twin --fuente cofas
 ```
 
 **3. Dashboard:**
